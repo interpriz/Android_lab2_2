@@ -3,11 +3,15 @@ package com.example.lab2_2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.opengl.Visibility;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -17,7 +21,6 @@ public class testActivity extends AppCompatActivity {
     private TextView check;
     private TextView percentResult;
     private EditText result;
-    private ProgressBar progressBar;
     private Button buttonCheck;
     private Button buttonNext;
 
@@ -25,8 +28,9 @@ public class testActivity extends AppCompatActivity {
     int counter = 1;
     int a;
     int b;
-    final double number = 5;
+    final int number = 5;
     String mode;
+    boolean flagCheck = false;
 
     private void createEquation(String mode) {
         if (mode.equals("all"))
@@ -58,8 +62,11 @@ public class testActivity extends AppCompatActivity {
 
         createEquation(mode);
 
-        buttonNext.setOnClickListener((v) -> {
+    }
 
+     public void buttonNext (View view){
+        if(flagCheck){
+            flagCheck = false;
             if (counter <= number) {
                 counter++;
                 buttonCheck.setClickable(true);
@@ -69,22 +76,31 @@ public class testActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
+        }else{
+            Toast toast = Toast.makeText(this, "Вы не проверили пример!",Toast.LENGTH_LONG);
+            toast.show();
+        }
 
-        });
 
-        buttonCheck.setOnClickListener((v) -> {
-            int res = Integer.parseInt(result.getText().toString());
-            if (a * b == res) {
-                score++;
-                check.setText("верно!");
-            } else check.setText("не верно!");
-            buttonCheck.setClickable(false);
-            if (counter == number) {
-                counter++;
-                percentResult.setText("Правильно:" + score / number * 100 + "%");
-                buttonNext.setText("В меню");
-            }
-        });
+    };
 
-    }
+    public void buttonCheck(View view ){
+        flagCheck = true;
+        int res = Integer.parseInt(result.getText().toString());
+        if (a * b == res) {
+            score++;
+            check.setText("верно!");
+            check.setTextColor(Color.GREEN);
+        } else{
+            check.setText("не верно!");
+            check.setTextColor(Color.RED);
+        }
+        buttonCheck.setClickable(false);
+        if (counter == number) {
+            counter++;
+            percentResult.setText("Правильно:" + score / (double)number * 100 + "%");
+            buttonCheck.setVisibility(View.INVISIBLE);
+            buttonNext.setText("В меню");
+        }
+    };
 }

@@ -37,25 +37,24 @@ public class MainActivity extends AppCompatActivity {
 
             boolean flag = false;
             int a = 0;
-
-            a =  Integer.parseInt(enterNumber.getText().toString());
-
-            if(a>=2 && a<=9){
-                // создание объекта Intent для запуска SecondActivity
-                Intent intent = new Intent(this, testActivity.class);
-                // передача объекта с ключом "hello" и значением "Hello World"
-                intent.putExtra("mode", "some");
-                intent.putExtra("a", a);
-                // запуск SecondActivity
-                startActivity(intent);
+            Toast toast = Toast.makeText(this, "Введите число от 2 до 9!",Toast.LENGTH_LONG);
+            String b = enterNumber.getText().toString();
+            if(!b.isEmpty()){
+                a = Integer.parseInt(b);
+                if(a>=2 && a<=9){
+                    // создание объекта Intent для запуска SecondActivity
+                    Intent intent = new Intent(this, testActivity.class);
+                    // передача объекта с ключом "hello" и значением "Hello World"
+                    intent.putExtra("mode", "some");
+                    intent.putExtra("a", a);
+                    // запуск SecondActivity
+                    startActivity(intent);
+                }else{
+                    toast.show();
+                }
             }else{
-                Toast toast = Toast.makeText(this, "Введите число от 2 до 9!",Toast.LENGTH_LONG);
                 toast.show();
             }
-
-
-
-
 
         });
 
